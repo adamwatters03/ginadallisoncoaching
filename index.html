@@ -45,6 +45,8 @@
   .gd-marquee:hover{animation-play-state:paused;}
   @media(prefers-reduced-motion:reduce){.gd-marquee{animation:none;}}
   @media(max-width:820px){[data-trio]{grid-template-columns:1fr !important;}}
+  [data-aboutcard]{margin-left:0;}
+  @media(min-width:980px){[data-aboutcard]{margin-left:clamp(-90px,-5vw,-40px);}}
   /* Responsive navigation */
   [data-burger]{display:none;}
   [data-mobilemenu]{display:none;}
@@ -185,20 +187,30 @@
       </section>
 
       <!-- ABOUT -->
-      <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#eef6ea;">
-        <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
-          <div style="position:relative;">
-            <div style="border-radius:12px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 24px 56px rgba(20,40,25,0.18);">{{ aboutImg }}</div>
-            <button onClick="{{ goAbout }}" style="position:absolute;left:18px;bottom:-18px;display:inline-flex;align-items:center;gap:9px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:999px;padding:8px 8px 8px 22px;cursor:pointer;box-shadow:0 12px 26px rgba(239,122,28,0.4);" style-hover="transform:translateY(-2px);">Discover Gina <span style="width:30px;height:30px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;">↗</span></button>
-          </div>
-          <div>
-            <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;color:#2f5e3a;">About Gina</span></div>
-            <h2 style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;color:#16281c;margin-bottom:18px;text-wrap:balance;">Authentic, hope-filled support to reconnect you with possibility.</h2>
-            <p style="font-size:16px;font-weight:400;line-height:1.7;color:#4a5548;margin-bottom:26px;max-width:520px;">Is your body telling you, in no uncertain terms, that what you’re currently doing is not serving you? By travelling together, that journey — although challenging — can become fun, exciting and insightful.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 26px;">
-              <sc-for list="{{ specialties }}" as="s" hint-placeholder-count="4">
-                <div style="display:flex;align-items:flex-start;gap:10px;"><span style="color:#ef7a1c;font-weight:800;font-size:16px;line-height:1.4;">»</span><span style="font-size:15px;font-weight:600;color:#2b3128;line-height:1.45;">{{ s }}</span></div>
-              </sc-for>
+      <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#eef6ea;overflow:hidden;">
+        <div style="max-width:1180px;margin:0 auto;">
+          <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:26px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;color:#2f5e3a;">About Gina</span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,3vw,40px);align-items:start;">
+            <div style="position:relative;">
+              <div style="border-radius:14px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 24px 56px rgba(20,40,25,0.18);">{{ aboutImg }}</div>
+              <button onClick="{{ goAbout }}" style="position:absolute;left:18px;bottom:-18px;display:inline-flex;align-items:center;gap:9px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:999px;padding:8px 8px 8px 22px;cursor:pointer;box-shadow:0 12px 26px rgba(239,122,28,0.4);" style-hover="transform:translateY(-2px);">Discover Gina <span style="width:30px;height:30px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;">↗</span></button>
+            </div>
+            <div>
+              <div data-aboutcard style="position:relative;z-index:2;background:#fff;border-radius:14px;padding:clamp(26px,3vw,40px);box-shadow:0 24px 60px rgba(20,40,25,0.14);margin-bottom:30px;">
+                <h2 style="font-size:clamp(26px,3vw,40px);font-weight:800;line-height:1.14;letter-spacing:-0.02em;color:#16281c;margin-bottom:16px;text-wrap:balance;">Authentic, hope-filled support to reconnect you with possibility.</h2>
+                <p style="font-size:16px;line-height:1.7;color:#4a5548;">Is your body telling you, in no uncertain terms, that what you’re currently doing is not serving you? By travelling together, that journey — although challenging — can become fun, exciting and insightful.</p>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr auto;gap:clamp(18px,2.5vw,32px);align-items:center;">
+                <div>
+                  <div style="font-size:14px;font-weight:800;letter-spacing:0.04em;color:#16281c;margin-bottom:16px;">WHY WORK WITH GINA:</div>
+                  <div style="display:flex;flex-direction:column;gap:12px;">
+                    <sc-for list="{{ specialties }}" as="s" hint-placeholder-count="4">
+                      <div style="display:flex;align-items:flex-start;gap:10px;"><span style="color:#ef7a1c;font-weight:800;font-size:16px;line-height:1.4;">»</span><span style="font-size:15px;font-weight:600;color:#2b3128;line-height:1.45;">{{ s }}</span></div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="width:clamp(110px,13vw,160px);aspect-ratio:3/4;border-radius:14px;overflow:hidden;box-shadow:0 16px 36px rgba(20,40,25,0.18);flex:none;">{{ aboutImg2 }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1126,23 +1138,38 @@ class Component extends DCLogic {
       { name: 'Sarah M.', role: 'Map of Wellness graduate', text: 'Gina helped me see my illness not as a wall, but as a doorway. I finally feel like I am moving forward instead of standing still.' },
       { name: 'Daniel R.', role: 'Group coaching member', text: 'The “one thing” genuinely shifted something in me. For the first time in years I feel hopeful about what is ahead.' },
     ];
-    const stars = React.createElement('div', { style: { display: 'flex', gap: '3px', marginBottom: '16px' } }, [0, 1, 2, 3, 4].map((i) => React.createElement('span', { key: i, style: { color: '#ef7a1c', fontSize: '16px' } }, '★')));
-    const card = (r, i) => React.createElement('div', { key: i, style: { background: '#fff', border: '1px solid rgba(20,40,25,0.08)', borderRadius: '12px', padding: '28px' } },
-      stars,
-      React.createElement('p', { style: { fontSize: '15px', lineHeight: 1.7, color: '#4a5548', marginBottom: '20px' } }, r.text),
-      React.createElement('div', { style: { fontSize: '16px', fontWeight: 800, color: '#16281c' } }, r.name),
-      React.createElement('div', { style: { fontSize: '13px', color: '#ef7a1c', fontWeight: 600 } }, r.role)
+    const stars = (sz) => React.createElement('div', { style: { display: 'flex', gap: '3px' } }, [0, 1, 2, 3, 4].map((i) => React.createElement('span', { key: i, style: { color: '#ef7a1c', fontSize: (sz || 16) + 'px' } }, '★')));
+    const card = (r, i) => React.createElement('div', { key: i, style: { position: 'relative', overflow: 'hidden', background: '#eef6ea', borderRadius: '14px', padding: 'clamp(22px,2.4vw,28px)' } },
+      React.createElement('div', { style: { marginBottom: '14px' } }, stars(16)),
+      React.createElement('p', { style: { fontSize: '14.5px', lineHeight: 1.7, color: '#4a5548', marginBottom: '20px', position: 'relative', zIndex: 1 } }, r.text),
+      React.createElement('div', { style: { fontSize: '17px', fontWeight: 800, color: '#16281c' } }, r.name),
+      React.createElement('div', { style: { fontSize: '13px', color: '#ef7a1c', fontWeight: 600 } }, r.role),
+      React.createElement('span', { style: { position: 'absolute', right: '18px', bottom: '6px', fontSize: '64px', lineHeight: 1, fontWeight: 800, color: 'rgba(239,122,28,0.28)', fontFamily: 'Georgia, serif', pointerEvents: 'none' } }, '”')
     );
-    return React.createElement('section', { 'data-reveal': '1', style: { padding: 'clamp(56px,7vw,100px) clamp(20px,5vw,60px)', background: '#fff' } },
-      React.createElement('div', { style: { maxWidth: '1000px', margin: '0 auto' } },
-        React.createElement('div', { style: { textAlign: 'center', maxWidth: '620px', margin: '0 auto 40px' } },
+    const avatar = (src, overlap) => React.createElement('span', { key: src, style: { width: '46px', height: '46px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #fff', display: 'inline-block', marginLeft: overlap ? '-14px' : '0', boxShadow: '0 6px 16px rgba(0,0,0,0.25)' } }, this.img(src, ''));
+    return React.createElement('section', { 'data-reveal': '1', style: { padding: 'clamp(56px,7vw,100px) clamp(20px,5vw,60px)', background: '#fff', overflow: 'hidden' } },
+      React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 'clamp(28px,4vw,52px)', alignItems: 'center' } },
+        React.createElement('div', null,
           React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '9px', marginBottom: '14px' } },
             React.createElement('span', { style: { width: '16px', height: '16px', background: '#ef7a1c', borderRadius: '0 70% 0 70%' } }),
             React.createElement('span', { style: { fontSize: '13px', fontWeight: 700, color: '#2f5e3a' } }, 'Kind words')
           ),
-          React.createElement('h2', { style: { fontSize: 'clamp(28px,3.4vw,44px)', fontWeight: 800, lineHeight: 1.12, color: '#16281c' } }, 'Real experiences, shared by people I’ve walked beside')
+          React.createElement('h2', { style: { fontSize: 'clamp(28px,3.4vw,44px)', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', color: '#16281c', marginBottom: '16px', textWrap: 'balance' } }, 'Real experiences, shared by people I’ve walked beside'),
+          React.createElement('p', { style: { fontSize: '16px', lineHeight: 1.7, color: '#5d685a', marginBottom: '28px', maxWidth: '480px' } }, 'Gentle, honest words from people who chose hope — and began walking their own path to a brighter world.'),
+          React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: '16px' } }, reviews.map(card))
         ),
-        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '20px' } }, reviews.map(card))
+        React.createElement('div', { style: { position: 'relative', borderRadius: '16px', overflow: 'hidden', minHeight: 'clamp(380px,46vw,520px)', boxShadow: '0 24px 60px rgba(20,40,25,0.22)' } },
+          this.img('images/gina-flowers.jpg', 'Gina among the flowers', { position: 'absolute', inset: 0 }),
+          React.createElement('div', { style: { position: 'absolute', inset: 0, background: 'linear-gradient(180deg,rgba(15,40,28,0.6),rgba(15,40,28,0.12) 42%,rgba(15,40,28,0.78))' } }),
+          React.createElement('div', { style: { position: 'absolute', top: '24px', left: '24px', right: '24px', textAlign: 'center' } },
+            React.createElement('div', { style: { display: 'flex', justifyContent: 'center', marginBottom: '8px' } }, stars(18)),
+            React.createElement('div', { style: { fontSize: '21px', fontWeight: 800, color: '#fff' } }, 'Heartfelt words'),
+            React.createElement('div', { style: { fontSize: '13px', color: 'rgba(255,255,255,0.82)' } }, 'from the people I’ve walked beside')
+          ),
+          React.createElement('div', { style: { position: 'absolute', left: '24px', bottom: '24px', display: 'flex', alignItems: 'center' } },
+            avatar('images/gina-wisteria.jpg', false), avatar('images/gina-headshot.jpg', true), avatar('images/gina-mug.jpg', true)
+          )
+        )
       )
     );
   }
