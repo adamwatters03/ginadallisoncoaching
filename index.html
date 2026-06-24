@@ -40,6 +40,10 @@
   @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
   @keyframes gdMenuIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
   @keyframes gdFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes gdMarquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .gd-marquee{animation:gdMarquee 36s linear infinite;}
+  .gd-marquee:hover{animation-play-state:paused;}
+  @media(prefers-reduced-motion:reduce){.gd-marquee{animation:none;}}
   /* Responsive navigation */
   [data-burger]{display:none;}
   [data-mobilemenu]{display:none;}
@@ -1078,8 +1082,9 @@ class Component extends DCLogic {
     );
     return React.createElement('footer', { style: { background: '#16382a' } },
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', padding: 'clamp(40px,5vw,64px) clamp(20px,5vw,60px) 0' } },
-        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '14px', marginBottom: '48px' } },
-          gal.map((s, i) => React.createElement('div', { key: i, style: { aspectRatio: '4/3', borderRadius: '10px', overflow: 'hidden' } }, this.img(s, ''))))
+        React.createElement('div', { style: { overflow: 'hidden', marginBottom: '48px', WebkitMaskImage: 'linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)', maskImage: 'linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)' } },
+          React.createElement('div', { className: 'gd-marquee', style: { display: 'flex', width: 'max-content' } },
+            gal.concat(gal).map((s, i) => React.createElement('div', { key: i, 'aria-hidden': i >= gal.length ? 'true' : undefined, style: { width: '230px', flex: 'none', marginRight: '14px', aspectRatio: '4/3', borderRadius: '10px', overflow: 'hidden' } }, this.img(s, '')))))
       ),
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', padding: '0 clamp(20px,5vw,60px) 40px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '40px' } },
         React.createElement('div', null,
