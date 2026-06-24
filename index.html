@@ -38,6 +38,16 @@
   ::placeholder{color:rgba(255,255,255,0.7);}
   @keyframes spin{to{transform:rotate(360deg);}}
   @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  @keyframes gdMenuIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+  /* Responsive navigation */
+  [data-burger]{display:none;}
+  [data-mobilemenu]{display:none;}
+  @media(max-width:1024px){
+    [data-navlinks]{display:none !important;}
+    [data-navcta]{display:none !important;}
+    [data-burger]{display:inline-flex !important;}
+    [data-mobilemenu]{display:flex !important;animation:gdMenuIn 0.25s ease;}
+  }
 </style>
 </helmet>
 
@@ -48,17 +58,30 @@
       <div onClick="{{ goHome }}" style="display:flex;align-items:center;cursor:pointer;">
         <img src="images/logo-white.png" alt="Gina Dallison Coaching — Have Hope, Feel Better" style="height:clamp(40px,4.2vw,50px);width:auto;display:block;" />
       </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(7px,1.5vw,24px);">
-        <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
-          <button onClick="{{ item.onClick }}" style="position:relative;background:none;border:none;color:rgba(255,255,255,0.92);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:6px 1px;white-space:nowrap;transition:color 0.2s;" style-hover="color:#ffb877;">
-            {{ item.label }}
-            <sc-if value="{{ item.active }}"><span style="position:absolute;left:0;right:0;bottom:-3px;height:2px;border-radius:2px;background:#ef7a1c;"></span></sc-if>
-          </button>
-        </sc-for>
-        <button onClick="{{ goContact }}" style="display:inline-flex;align-items:center;gap:8px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:13px;font-weight:700;border:none;border-radius:999px;padding:7px 7px 7px 18px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 6px 18px rgba(239,122,28,0.3);" style-hover="transform:translateY(-2px);box-shadow:0 10px 24px rgba(239,122,28,0.45);">
+      <div style="display:flex;flex-wrap:nowrap;align-items:center;gap:clamp(10px,1.5vw,24px);">
+        <div data-navlinks style="display:flex;align-items:center;gap:clamp(7px,1.5vw,24px);">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+            <button onClick="{{ item.onClick }}" style="position:relative;background:none;border:none;color:rgba(255,255,255,0.92);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:6px 1px;white-space:nowrap;transition:color 0.2s;" style-hover="color:#ffb877;">
+              {{ item.label }}
+              <sc-if value="{{ item.active }}"><span style="position:absolute;left:0;right:0;bottom:-3px;height:2px;border-radius:2px;background:#ef7a1c;"></span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <button data-navcta onClick="{{ goContact }}" style="display:inline-flex;align-items:center;gap:8px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:13px;font-weight:700;border:none;border-radius:999px;padding:7px 7px 7px 18px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 6px 18px rgba(239,122,28,0.3);white-space:nowrap;" style-hover="transform:translateY(-2px);box-shadow:0 10px 24px rgba(239,122,28,0.45);">
           Book a Call <span style="width:26px;height:26px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;font-size:13px;">↗</span>
         </button>
+        <button data-burger onClick="{{ toggleMenu }}" style="width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;align-items:center;justify-content:center;cursor:pointer;font-size:20px;line-height:1;flex:none;">{{ menuIcon }}</button>
       </div>
+      <sc-if value="{{ menuOpen }}">
+        <div data-mobilemenu style="flex-basis:100%;flex-direction:column;gap:2px;margin-top:12px;">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="8">
+            <button onClick="{{ item.onClick }}" style="text-align:left;background:none;border:none;color:#fff;font-family:inherit;font-size:15.5px;font-weight:600;padding:13px 4px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.1);width:100%;">{{ item.label }}</button>
+          </sc-for>
+          <button onClick="{{ goContact }}" style="margin-top:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:999px;padding:13px;cursor:pointer;width:100%;">
+            Book a Call <span style="width:26px;height:26px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;font-size:13px;">↗</span>
+          </button>
+        </div>
+      </sc-if>
     </nav>
   </sc-if>
 
@@ -98,7 +121,7 @@
           </div>
 
           <div data-reveal style="position:relative;display:flex;justify-content:center;">
-            <div style="position:relative;width:min(420px,86%);aspect-ratio:4/5;border-radius:230px 230px 24px 24px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,0.4);">
+            <div style="position:relative;width:min(420px,86%);aspect-ratio:4/5;border-radius:90px 90px 14px 14px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,0.4);">
               <img src="images/gina-hero.jpg" alt="Gina Dallison smiling outdoors" style="width:100%;height:100%;object-fit:cover;display:block;" />
             </div>
             <div style="position:absolute;right:clamp(-6px,2vw,8px);top:14%;width:118px;height:118px;border-radius:50%;background:#16382a;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(0,0,0,0.35);">
@@ -116,14 +139,14 @@
       <!-- stat bar straddling into the next section -->
       <div data-reveal style="position:relative;z-index:6;margin-top:clamp(-104px,-7.5vw,-68px);padding:0 clamp(20px,5vw,60px);">
         <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;">
-          <div style="flex:1;min-width:230px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff;border-radius:16px;padding:20px 24px;box-shadow:0 18px 40px rgba(0,0,0,0.18);">
+          <div style="flex:1;min-width:230px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 18px 40px rgba(0,0,0,0.18);">
             <div>
               <div style="font-size:30px;font-weight:800;color:#16382a;">100%</div>
               <div style="font-size:13px;color:#5d685a;">Whole-person approach</div>
             </div>
             <span style="color:#ef7a1c;font-size:22px;">↗</span>
           </div>
-          <div style="flex:1.4;min-width:260px;display:flex;align-items:center;justify-content:space-between;gap:18px;background:#fff;border-radius:16px;padding:16px 22px;box-shadow:0 18px 40px rgba(0,0,0,0.18);">
+          <div style="flex:1.4;min-width:260px;display:flex;align-items:center;justify-content:space-between;gap:18px;background:#fff;border-radius:10px;padding:16px 22px;box-shadow:0 18px 40px rgba(0,0,0,0.18);">
             <div style="display:flex;align-items:center;gap:14px;">
               <span style="width:46px;height:46px;border-radius:50%;background:rgba(239,122,28,0.14);color:#ef7a1c;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none;">☎</span>
               <div>
@@ -139,15 +162,15 @@
       <!-- INTRO TRIO -->
       <section data-reveal style="padding:clamp(44px,5.5vw,76px) clamp(20px,5vw,60px) clamp(56px,7vw,90px);background:#fff;">
         <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
-          <div style="background:linear-gradient(160deg,#eef7e9,#dcecd3);border-radius:20px;padding:30px;display:flex;flex-direction:column;justify-content:space-between;min-height:210px;">
+          <div style="background:linear-gradient(160deg,#eef7e9,#dcecd3);border-radius:12px;padding:30px;display:flex;flex-direction:column;justify-content:space-between;min-height:210px;">
             <div>
               <div style="font-size:13px;font-weight:700;color:#2f5e3a;margin-bottom:8px;">Lived experience</div>
               <div style="font-size:40px;font-weight:800;color:#16382a;line-height:1;">A path<br/>walked first</div>
             </div>
             <div style="display:flex;justify-content:flex-end;"><span style="width:42px;height:42px;border-radius:50%;background:#ef7a1c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;">↗</span></div>
           </div>
-          <div style="border-radius:20px;overflow:hidden;min-height:210px;">{{ trioImg }}</div>
-          <div style="background:linear-gradient(160deg,#16382a,#0f2c20);border-radius:20px;padding:30px;display:flex;align-items:center;">
+          <div style="border-radius:12px;overflow:hidden;min-height:210px;">{{ trioImg }}</div>
+          <div style="background:linear-gradient(160deg,#16382a,#0f2c20);border-radius:12px;padding:30px;display:flex;align-items:center;">
             <p style="font-size:clamp(17px,1.7vw,21px);font-weight:500;line-height:1.45;color:#fff;">Create lifelong hope and momentum — with gentle support shaped entirely around your life.</p>
           </div>
         </div>
@@ -157,7 +180,7 @@
       <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#eef6ea;">
         <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
           <div style="position:relative;">
-            <div style="border-radius:20px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 24px 56px rgba(20,40,25,0.18);">{{ aboutImg }}</div>
+            <div style="border-radius:12px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 24px 56px rgba(20,40,25,0.18);">{{ aboutImg }}</div>
             <button onClick="{{ goAbout }}" style="position:absolute;left:18px;bottom:-18px;display:inline-flex;align-items:center;gap:9px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:999px;padding:8px 8px 8px 22px;cursor:pointer;box-shadow:0 12px 26px rgba(239,122,28,0.4);" style-hover="transform:translateY(-2px);">Discover Gina <span style="width:30px;height:30px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;">↗</span></button>
           </div>
           <div>
@@ -186,7 +209,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
             <sc-for list="{{ services }}" as="sv">
-              <div onClick="{{ sv.onClick }}" style="background:#eef6ea;border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;box-shadow:0 12px 30px rgba(20,40,25,0.06);" style-hover="transform:translateY(-7px);box-shadow:0 22px 48px rgba(20,40,25,0.16);">
+              <div onClick="{{ sv.onClick }}" style="background:#eef6ea;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;box-shadow:0 12px 30px rgba(20,40,25,0.06);" style-hover="transform:translateY(-7px);box-shadow:0 22px 48px rgba(20,40,25,0.16);">
                 <div style="aspect-ratio:5/4;overflow:hidden;">{{ sv.imgEl }}</div>
                 <div style="padding:24px;">
                   <div style="font-size:20px;font-weight:800;color:#16281c;margin-bottom:10px;">{{ sv.title }}</div>
@@ -210,7 +233,7 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:20px;">
             <sc-for list="{{ programs }}" as="pr">
-              <div onClick="{{ pr.onClick }}" style="position:relative;border-radius:24px;overflow:hidden;min-height:clamp(220px,26vw,300px);display:flex;align-items:center;cursor:pointer;box-shadow:0 18px 44px rgba(20,40,25,0.14);" style-hover="transform:translateY(-4px);">
+              <div onClick="{{ pr.onClick }}" style="position:relative;border-radius:14px;overflow:hidden;min-height:clamp(220px,26vw,300px);display:flex;align-items:center;cursor:pointer;box-shadow:0 18px 44px rgba(20,40,25,0.14);" style-hover="transform:translateY(-4px);">
                 <div style="position:absolute;inset:0;">{{ pr.imgEl }}</div>
                 <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,40,28,0.85) 0%,rgba(15,40,28,0.45) 50%,transparent 100%);"></div>
                 <div style="position:relative;padding:clamp(28px,4vw,52px);max-width:520px;">
@@ -251,7 +274,7 @@
             <h2 style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;color:#16281c;margin-bottom:26px;text-wrap:balance;">Where struggle meets a gentler, brighter path.</h2>
             <div style="display:flex;flex-direction:column;gap:14px;">
               <sc-for list="{{ whyFeatures }}" as="w" hint-placeholder-count="2">
-                <div style="display:flex;align-items:flex-start;gap:16px;background:#eef6ea;border-radius:16px;padding:20px 22px;">
+                <div style="display:flex;align-items:flex-start;gap:16px;background:#eef6ea;border-radius:10px;padding:20px 22px;">
                   <span style="width:46px;height:46px;border-radius:50%;background:#ef7a1c;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none;">✦</span>
                   <div>
                     <div style="font-size:18px;font-weight:800;color:#16281c;margin-bottom:4px;">{{ w.title }}</div>
@@ -262,8 +285,8 @@
             </div>
           </div>
           <div style="position:relative;min-height:360px;">
-            <div style="position:absolute;right:0;top:0;width:78%;aspect-ratio:4/5;border-radius:20px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ whyImgA }}</div>
-            <div style="position:absolute;left:0;bottom:0;width:50%;aspect-ratio:1;border-radius:20px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(20,40,25,0.2);">{{ whyImgB }}</div>
+            <div style="position:absolute;right:0;top:0;width:78%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ whyImgA }}</div>
+            <div style="position:absolute;left:0;bottom:0;width:50%;aspect-ratio:1;border-radius:12px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(20,40,25,0.2);">{{ whyImgB }}</div>
           </div>
         </div>
       </section>
@@ -277,7 +300,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
             <sc-for list="{{ roles }}" as="r">
-              <div style="background:#fff;border-radius:20px;padding:24px;text-align:center;box-shadow:0 12px 30px rgba(20,40,25,0.07);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
+              <div style="background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 12px 30px rgba(20,40,25,0.07);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
                 <div style="width:150px;height:150px;border-radius:50%;overflow:hidden;margin:0 auto 18px;background:#dcecd3;">{{ r.imgEl }}</div>
                 <div style="font-size:19px;font-weight:800;color:#16281c;margin-bottom:4px;">{{ r.title }}</div>
                 <div style="font-size:13px;font-weight:600;color:#ef7a1c;">{{ r.role }}</div>
@@ -296,7 +319,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start;">
             <sc-for list="{{ plans }}" as="pl">
-              <div style="border-radius:22px;overflow:hidden;box-shadow:0 16px 40px rgba(20,40,25,0.1);transform:{{ pl.lift }};">
+              <div style="border-radius:14px;overflow:hidden;box-shadow:0 16px 40px rgba(20,40,25,0.1);transform:{{ pl.lift }};">
                 <div style="padding:16px;text-align:center;font-size:15px;font-weight:800;letter-spacing:0.04em;color:{{ pl.tabColor }};background:{{ pl.tabBg }};">{{ pl.name }}</div>
                 <div style="background:#16382a;padding:22px;text-align:center;color:#fff;">
                   <span style="font-size:34px;font-weight:800;">{{ pl.price }}</span> <span style="font-size:14px;color:rgba(255,255,255,0.7);">{{ pl.unit }}</span>
@@ -324,7 +347,7 @@
             <h2 style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;color:#16281c;margin-bottom:28px;text-wrap:balance;">Common questions about coaching with Gina</h2>
             <div style="display:flex;flex-direction:column;gap:12px;">
               <sc-for list="{{ faqs }}" as="fq">
-                <div onClick="{{ fq.toggle }}" style="border-radius:14px;overflow:hidden;cursor:pointer;background:{{ fq.bg }};border:1px solid rgba(20,40,25,0.08);">
+                <div onClick="{{ fq.toggle }}" style="border-radius:10px;overflow:hidden;cursor:pointer;background:{{ fq.bg }};border:1px solid rgba(20,40,25,0.08);">
                   <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;">
                     <span style="font-size:15.5px;font-weight:700;color:{{ fq.qColor }};">{{ fq.q }}</span>
                     <span style="width:30px;height:30px;border-radius:50%;background:{{ fq.iconBg }};color:{{ fq.iconColor }};display:flex;align-items:center;justify-content:center;font-size:18px;flex:none;">{{ fq.icon }}</span>
@@ -337,8 +360,8 @@
             </div>
           </div>
           <div style="position:relative;display:flex;justify-content:center;">
-            <div style="position:relative;width:min(380px,90%);aspect-ratio:3/4;border-radius:200px 200px 20px 20px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ faqImg }}</div>
-            <div style="position:absolute;right:0;top:30%;background:#16382a;border-radius:16px;padding:18px 22px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,0.25);">
+            <div style="position:relative;width:min(380px,90%);aspect-ratio:3/4;border-radius:80px 80px 12px 12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ faqImg }}</div>
+            <div style="position:absolute;right:0;top:30%;background:#16382a;border-radius:10px;padding:18px 22px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,0.25);">
               <div style="font-size:26px;font-weight:800;color:#ff9a44;">You-led</div>
               <div style="font-size:12px;color:rgba(255,255,255,0.8);">always at your pace</div>
             </div>
@@ -358,7 +381,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;">
             <sc-for list="{{ posts }}" as="post">
-              <div onClick="{{ goBlog }}" style="border:1px solid rgba(20,40,25,0.08);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(20,40,25,0.14);">
+              <div onClick="{{ goBlog }}" style="border:1px solid rgba(20,40,25,0.08);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(20,40,25,0.14);">
                 <div style="aspect-ratio:16/10;overflow:hidden;">{{ post.imgEl }}</div>
                 <div style="padding:22px;">
                   <div style="display:flex;align-items:center;gap:14px;font-size:12px;color:#8a948440;margin-bottom:12px;"><span style="color:#5d685a;">{{ post.author }}</span><span style="color:#5d685a;">{{ post.date }}</span></div>
@@ -392,8 +415,8 @@
       <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#fff;">
         <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
           <div style="position:relative;min-height:380px;">
-            <div style="position:absolute;left:0;top:0;width:74%;aspect-ratio:4/5;border-radius:20px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ aboutStoryImg }}</div>
-            <div style="position:absolute;right:0;bottom:0;width:52%;aspect-ratio:1;border-radius:20px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(20,40,25,0.2);">{{ aboutImg2 }}</div>
+            <div style="position:absolute;left:0;top:0;width:74%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ aboutStoryImg }}</div>
+            <div style="position:absolute;right:0;bottom:0;width:52%;aspect-ratio:1;border-radius:12px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(20,40,25,0.2);">{{ aboutImg2 }}</div>
           </div>
           <div>
             <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;color:#2f5e3a;">A fellow traveller</span></div>
@@ -424,7 +447,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
             <sc-for list="{{ roles }}" as="r">
-              <div style="background:#fff;border-radius:20px;padding:24px;text-align:center;box-shadow:0 12px 30px rgba(20,40,25,0.07);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
+              <div style="background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 12px 30px rgba(20,40,25,0.07);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
                 <div style="width:150px;height:150px;border-radius:50%;overflow:hidden;margin:0 auto 18px;background:#dcecd3;">{{ r.imgEl }}</div>
                 <div style="font-size:19px;font-weight:800;color:#16281c;margin-bottom:4px;">{{ r.title }}</div>
                 <div style="font-size:13px;font-weight:600;color:#ef7a1c;">{{ r.role }}</div>
@@ -462,7 +485,7 @@
       <section data-reveal style="padding:clamp(20px,3vw,40px) clamp(20px,5vw,60px) clamp(56px,7vw,90px);background:#fff;">
         <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
           <sc-for list="{{ services }}" as="sv">
-            <div onClick="{{ sv.onClick }}" style="background:#eef6ea;border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;box-shadow:0 12px 30px rgba(20,40,25,0.06);" style-hover="transform:translateY(-7px);box-shadow:0 22px 48px rgba(20,40,25,0.16);">
+            <div onClick="{{ sv.onClick }}" style="background:#eef6ea;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;box-shadow:0 12px 30px rgba(20,40,25,0.06);" style-hover="transform:translateY(-7px);box-shadow:0 22px 48px rgba(20,40,25,0.16);">
               <div style="aspect-ratio:5/4;overflow:hidden;">{{ sv.imgEl }}</div>
               <div style="padding:24px;">
                 <div style="font-size:20px;font-weight:800;color:#16281c;margin-bottom:10px;">{{ sv.title }}</div>
@@ -482,7 +505,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;align-items:start;">
             <sc-for list="{{ plans }}" as="pl">
-              <div style="border-radius:22px;overflow:hidden;box-shadow:0 16px 40px rgba(20,40,25,0.1);transform:{{ pl.lift }};">
+              <div style="border-radius:14px;overflow:hidden;box-shadow:0 16px 40px rgba(20,40,25,0.1);transform:{{ pl.lift }};">
                 <div style="padding:16px;text-align:center;font-size:15px;font-weight:800;letter-spacing:0.04em;color:{{ pl.tabColor }};background:{{ pl.tabBg }};">{{ pl.name }}</div>
                 <div style="background:#16382a;padding:22px;text-align:center;color:#fff;"><span style="font-size:34px;font-weight:800;">{{ pl.price }}</span> <span style="font-size:14px;color:rgba(255,255,255,0.7);">{{ pl.unit }}</span></div>
                 <div style="padding:26px 24px;background:{{ pl.bodyBg }};">
@@ -535,13 +558,13 @@
         </div>
         <div style="max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:14px;">
           <sc-for list="{{ familiarItems }}" as="it" hint-placeholder-count="5">
-            <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:14px;padding:16px 20px;box-shadow:0 8px 22px rgba(20,40,25,0.05);">
+            <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:16px 20px;box-shadow:0 8px 22px rgba(20,40,25,0.05);">
               <span style="width:30px;height:30px;border-radius:50%;background:rgba(239,122,28,0.14);color:#ef7a1c;display:flex;align-items:center;justify-content:center;font-size:15px;flex:none;">•</span>
               <span style="font-size:15.5px;font-weight:600;color:#2b3128;line-height:1.4;">{{ it }}</span>
             </div>
           </sc-for>
         </div>
-        <div style="max-width:620px;margin:30px auto 0;background:#16382a;border-radius:16px;padding:26px 28px;text-align:center;">
+        <div style="max-width:620px;margin:30px auto 0;background:#16382a;border-radius:10px;padding:26px 28px;text-align:center;">
           <p style="font-size:clamp(18px,2vw,23px);font-weight:700;line-height:1.4;color:#fff;">You’re not broken. <span style="color:#ff9a44;">You’re just stuck without a clear path.</span></p>
         </div>
       </section>
@@ -555,7 +578,7 @@
         </div>
         <div style="max-width:880px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
           <sc-for list="{{ shiftItems }}" as="it" hint-placeholder-count="4">
-            <div style="display:flex;align-items:center;gap:14px;background:#eef6ea;border-radius:14px;padding:20px 22px;">
+            <div style="display:flex;align-items:center;gap:14px;background:#eef6ea;border-radius:10px;padding:20px 22px;">
               <span style="width:30px;height:30px;border-radius:50%;background:#2f7d4a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;">✓</span>
               <span style="font-size:15.5px;font-weight:700;color:#16281c;line-height:1.35;">{{ it }}</span>
             </div>
@@ -570,10 +593,10 @@
             <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;letter-spacing:0.04em;color:#ffb877;">The ABC Framework</span></div>
             <h2 style="font-size:clamp(28px,3.6vw,46px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;color:#fff;">A simple path forward</h2>
           </div>
-          <div style="border-radius:22px;overflow:hidden;box-shadow:0 26px 64px rgba(0,0,0,0.4);margin-bottom:40px;">{{ m2wMapImg }}</div>
+          <div style="border-radius:14px;overflow:hidden;box-shadow:0 26px 64px rgba(0,0,0,0.4);margin-bottom:40px;">{{ m2wMapImg }}</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
             <sc-for list="{{ abc }}" as="a">
-              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:28px;">
+              <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:28px;">
                 <span style="display:inline-flex;width:48px;height:48px;border-radius:50%;background:#ef7a1c;color:#fff;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin-bottom:16px;">{{ a.L }}</span>
                 <div style="font-size:19px;font-weight:800;color:#fff;margin-bottom:10px;">{{ a.title }}</div>
                 <p style="font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.8);">{{ a.desc }}</p>
@@ -592,7 +615,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;">
             <sc-for list="{{ whatYouGet }}" as="g">
-              <div style="display:flex;align-items:flex-start;gap:16px;background:#eef6ea;border-radius:16px;padding:24px;">
+              <div style="display:flex;align-items:flex-start;gap:16px;background:#eef6ea;border-radius:10px;padding:24px;">
                 <span style="width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;"><span style="width:18px;height:18px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span></span>
                 <div>
                   <div style="font-size:17px;font-weight:800;color:#16281c;margin-bottom:6px;">{{ g.title }}</div>
@@ -612,7 +635,7 @@
         </div>
         <div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px;">
           <sc-for list="{{ results }}" as="it" hint-placeholder-count="5">
-            <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:14px;padding:18px 22px;box-shadow:0 8px 22px rgba(20,40,25,0.05);">
+            <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 8px 22px rgba(20,40,25,0.05);">
               <span style="width:30px;height:30px;border-radius:50%;background:#2f7d4a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;">✓</span>
               <span style="font-size:16px;font-weight:700;color:#16281c;line-height:1.4;">{{ it }}</span>
             </div>
@@ -623,7 +646,7 @@
       <!-- WHO IT IS / ISN'T FOR -->
       <section data-reveal style="padding:clamp(64px,8vw,110px) clamp(20px,5vw,60px);background:#fff;">
         <div style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
-          <div style="background:#f4faf0;border:1px solid rgba(47,125,74,0.2);border-radius:20px;padding:clamp(28px,3vw,40px);">
+          <div style="background:#f4faf0;border:1px solid rgba(47,125,74,0.2);border-radius:12px;padding:clamp(28px,3vw,40px);">
             <h3 style="font-size:22px;font-weight:800;color:#2f7d4a;margin-bottom:8px;">This is for you if…</h3>
             <p style="font-size:13.5px;color:#5d685a;margin-bottom:22px;">You’re ready to take a gentle but real step forward.</p>
             <div style="display:flex;flex-direction:column;gap:13px;">
@@ -632,7 +655,7 @@
               </sc-for>
             </div>
           </div>
-          <div style="background:#fdf3ee;border:1px solid rgba(217,102,63,0.22);border-radius:20px;padding:clamp(28px,3vw,40px);">
+          <div style="background:#fdf3ee;border:1px solid rgba(217,102,63,0.22);border-radius:12px;padding:clamp(28px,3vw,40px);">
             <h3 style="font-size:22px;font-weight:800;color:#c0532b;margin-bottom:8px;">This isn’t for you if…</h3>
             <p style="font-size:13.5px;color:#5d685a;margin-bottom:22px;">This work asks for openness and ownership.</p>
             <div style="display:flex;flex-direction:column;gap:13px;">
@@ -653,7 +676,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
             <sc-for list="{{ m2wTestimonials }}" as="t">
-              <div style="background:#fff;border-radius:18px;padding:28px;box-shadow:0 12px 30px rgba(20,40,25,0.06);">
+              <div style="background:#fff;border-radius:12px;padding:28px;box-shadow:0 12px 30px rgba(20,40,25,0.06);">
                 <div style="display:flex;gap:3px;margin-bottom:16px;"><span style="color:#ef7a1c;">★</span><span style="color:#ef7a1c;">★</span><span style="color:#ef7a1c;">★</span><span style="color:#ef7a1c;">★</span><span style="color:#ef7a1c;">★</span></div>
                 <p style="font-size:14.5px;line-height:1.7;color:#4a5548;margin-bottom:22px;">“{{ t.quote }}”</p>
                 <div style="display:flex;align-items:center;gap:12px;">
@@ -672,7 +695,7 @@
       <!-- ABOUT / WHY ME -->
       <section data-reveal style="padding:clamp(64px,8vw,110px) clamp(20px,5vw,60px);background:#fff;">
         <div style="max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
-          <div style="aspect-ratio:4/5;border-radius:220px 220px 20px 20px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);max-width:360px;">{{ whyMeImg }}</div>
+          <div style="aspect-ratio:4/5;border-radius:88px 88px 12px 12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);max-width:360px;">{{ whyMeImg }}</div>
           <div>
             <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;letter-spacing:0.04em;color:#2f5e3a;">Why me?</span></div>
             <h2 style="font-size:clamp(26px,3vw,40px);font-weight:800;line-height:1.14;letter-spacing:-0.02em;color:#16281c;margin-bottom:18px;">I’m Gina — and this isn’t theory. It’s lived.</h2>
@@ -688,11 +711,11 @@
         <div style="max-width:640px;margin:0 auto;text-align:center;">
           <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;letter-spacing:0.04em;color:#2f5e3a;">Your investment</span></div>
           <h2 style="font-size:clamp(28px,3.6vw,44px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;color:#16281c;margin-bottom:24px;">An investment in the rest of your life</h2>
-          <div style="background:#fff;border-radius:24px;padding:clamp(34px,4vw,52px);box-shadow:0 20px 50px rgba(20,40,25,0.1);">
+          <div style="background:#fff;border-radius:14px;padding:clamp(34px,4vw,52px);box-shadow:0 20px 50px rgba(20,40,25,0.1);">
             <div style="font-size:clamp(56px,9vw,86px);font-weight:800;color:#16382a;line-height:1;">£997</div>
             <div style="font-size:16px;font-weight:600;color:#5d685a;margin-top:8px;">for the full 12-week programme</div>
             <div style="font-size:13.5px;color:#8a948a;margin-top:6px;margin-bottom:26px;">Payment plan available on request</div>
-            <div style="background:#eef6ea;border-radius:14px;padding:18px 22px;margin-bottom:28px;">
+            <div style="background:#eef6ea;border-radius:10px;padding:18px 22px;margin-bottom:28px;">
               <p style="font-size:14.5px;line-height:1.6;color:#3f5640;">That’s 12 weeks of personalised support to change how you think, feel, and live — with tools you’ll use for life.</p>
             </div>
             <a href="https://tidycal.com/ginadallisoncoaching/free-quick-chat" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;background:#ef7a1c;color:#fff;text-decoration:none;font-family:inherit;font-size:15px;font-weight:700;border-radius:999px;padding:9px 9px 9px 26px;box-shadow:0 12px 28px rgba(239,122,28,0.36);transition:transform .2s,box-shadow .2s;" style-hover="transform:translateY(-3px);box-shadow:0 16px 34px rgba(239,122,28,0.5);">Book a 30-minute call to see if this is right for you <span style="width:36px;height:36px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none;">↗</span></a>
@@ -709,7 +732,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px;">
             <sc-for list="{{ m2wFaqs }}" as="fq">
-              <div style="background:#eef6ea;border-radius:16px;padding:24px 26px;">
+              <div style="background:#eef6ea;border-radius:10px;padding:24px 26px;">
                 <div style="font-size:16px;font-weight:800;color:#16281c;margin-bottom:8px;">{{ fq.q }}</div>
                 <p style="font-size:14.5px;line-height:1.6;color:#5d685a;">{{ fq.a }}</p>
               </div>
@@ -761,7 +784,7 @@
 
       <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#fff;">
         <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
-          <div style="aspect-ratio:1;border-radius:20px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ podcastImg }}</div>
+          <div style="aspect-ratio:1;border-radius:12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ podcastImg }}</div>
           <div>
             <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;color:#2f5e3a;">The podcast</span></div>
             <h2 style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.12;color:#16281c;margin-bottom:16px;text-wrap:balance;">Honest conversations on hope & healing</h2>
@@ -778,7 +801,7 @@
       <section data-reveal style="padding:0 clamp(20px,5vw,60px) clamp(56px,7vw,100px);background:#fff;">
         <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:14px;">
           <sc-for list="{{ episodes }}" as="e" hint-placeholder-count="5">
-            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#eef6ea;border-radius:16px;padding:18px 22px;transition:box-shadow 0.2s;" style-hover="box-shadow:0 14px 32px rgba(20,40,25,0.12);">
+            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#eef6ea;border-radius:10px;padding:18px 22px;transition:box-shadow 0.2s;" style-hover="box-shadow:0 14px 32px rgba(20,40,25,0.12);">
               <div style="width:52px;height:52px;border-radius:50%;background:#ef7a1c;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;"><span style="width:0;height:0;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px;"></span></div>
               <div style="flex:1;min-width:200px;">
                 <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#ef7a1c;font-weight:700;margin-bottom:5px;">{{ e.no }}</div>
@@ -815,7 +838,7 @@
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
             <sc-for list="{{ postsAll }}" as="post">
-              <div style="border:1px solid rgba(20,40,25,0.08);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(20,40,25,0.14);">
+              <div style="border:1px solid rgba(20,40,25,0.08);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s;" style-hover="transform:translateY(-6px);box-shadow:0 20px 44px rgba(20,40,25,0.14);">
                 <div style="aspect-ratio:16/10;overflow:hidden;">{{ post.imgEl }}</div>
                 <div style="padding:22px;">
                   <div style="display:flex;align-items:center;gap:14px;font-size:12px;color:#5d685a;margin-bottom:12px;"><span>{{ post.author }}</span><span>{{ post.date }}</span></div>
@@ -852,7 +875,7 @@
             <h2 style="font-size:clamp(28px,3.6vw,46px);font-weight:800;line-height:1.12;color:#16281c;text-wrap:balance;">Be a beacon of hope for each other</h2>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
-            <div style="position:relative;overflow:hidden;border-radius:24px;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 22px 54px rgba(20,40,25,0.18);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
+            <div style="position:relative;overflow:hidden;border-radius:14px;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 22px 54px rgba(20,40,25,0.18);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
               <img src="images/journey-steps.jpg" alt="Toward the light" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
               <div style="position:relative;padding:clamp(28px,3.5vw,44px);background:linear-gradient(transparent,rgba(15,40,28,0.92));">
                 <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#ff9a44;font-weight:700;margin-bottom:12px;">Live now & then</div>
@@ -861,7 +884,7 @@
                 <button style="display:inline-flex;align-items:center;gap:8px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:999px;padding:8px 8px 8px 22px;cursor:pointer;" style-hover="transform:translateY(-2px);">Join the Live <span style="width:30px;height:30px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;">↗</span></button>
               </div>
             </div>
-            <div style="position:relative;overflow:hidden;border-radius:24px;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 22px 54px rgba(20,40,25,0.18);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
+            <div style="position:relative;overflow:hidden;border-radius:14px;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 22px 54px rgba(20,40,25,0.18);transition:transform 0.25s;" style-hover="transform:translateY(-6px);">
               <img src="images/gina-flowers.jpg" alt="Among the flowers" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
               <div style="position:relative;padding:clamp(28px,3.5vw,44px);background:linear-gradient(transparent,rgba(15,40,28,0.92));">
                 <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#ff9a44;font-weight:700;margin-bottom:12px;">Facebook Group</div>
@@ -893,7 +916,7 @@
       <div data-reveal>{{ contactBlock }}</div>
 
       <section data-reveal style="padding:0 clamp(20px,5vw,60px) clamp(64px,8vw,100px);background:#fff;">
-        <div style="max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;background:#eef6ea;border:1px dashed rgba(239,122,28,0.5);border-radius:18px;padding:24px 30px;">
+        <div style="max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;background:#eef6ea;border:1px dashed rgba(239,122,28,0.5);border-radius:12px;padding:24px 30px;">
           <div>
             <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#ef7a1c;font-weight:700;margin-bottom:6px;">Free resource</div>
             <div style="font-size:19px;font-weight:800;color:#16281c;">Download the Diet Comparison Chart</div>
@@ -912,7 +935,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { page: 'home', faqOpen: 0 };
+  state = { page: 'home', faqOpen: 0, menuOpen: false };
 
   pages = [
     { key: 'home', label: 'Home' },
@@ -925,7 +948,8 @@ class Component extends DCLogic {
     { key: 'contact', label: 'Contact' },
   ];
 
-  go(page) { this.setState({ page }); }
+  go(page) { this.setState({ page, menuOpen: false }); }
+  toggleMenu = () => { this.setState({ menuOpen: !this.state.menuOpen }); };
 
   componentDidMount() { this._reveal(); this._startLoop(); }
   componentWillUnmount() { if (this._io) this._io.disconnect(); cancelAnimationFrame(this._raf); clearTimeout(this._rf); }
@@ -1004,8 +1028,8 @@ class Component extends DCLogic {
     return React.createElement('section', { style: { padding: 'clamp(40px,6vw,80px) clamp(20px,5vw,60px)', background: '#fff' } },
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '24px', alignItems: 'stretch' } },
         React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
-          React.createElement('div', { style: { borderRadius: '20px', overflow: 'hidden', aspectRatio: '16/10', boxShadow: '0 16px 40px rgba(20,40,25,0.14)' } }, this.img('images/gina-headshot.jpg', 'Gina Dallison')),
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '14px', background: '#eef6ea', borderRadius: '16px', padding: '20px 22px' } },
+          React.createElement('div', { style: { borderRadius: '12px', overflow: 'hidden', aspectRatio: '16/10', boxShadow: '0 16px 40px rgba(20,40,25,0.14)' } }, this.img('images/gina-headshot.jpg', 'Gina Dallison')),
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '14px', background: '#eef6ea', borderRadius: '10px', padding: '20px 22px' } },
             React.createElement('span', { style: { width: '46px', height: '46px', borderRadius: '50%', background: '#ef7a1c', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flex: 'none' } }, '☎'),
             React.createElement('div', null,
               React.createElement('div', { style: { fontSize: '13px', color: '#5d685a' } }, 'Prefer to talk?'),
@@ -1013,7 +1037,7 @@ class Component extends DCLogic {
             )
           )
         ),
-        React.createElement('div', { style: { position: 'relative', borderRadius: '22px', overflow: 'hidden', minHeight: '420px', display: 'flex', alignItems: 'center', padding: 'clamp(28px,3.5vw,48px)' } },
+        React.createElement('div', { style: { position: 'relative', borderRadius: '14px', overflow: 'hidden', minHeight: '420px', display: 'flex', alignItems: 'center', padding: 'clamp(28px,3.5vw,48px)' } },
           this.img('images/gina-mug.jpg', '', { position: 'absolute', inset: 0 }),
           React.createElement('div', { style: { position: 'absolute', inset: 0, background: 'linear-gradient(120deg,rgba(15,40,28,0.92),rgba(15,40,28,0.6))' } }),
           React.createElement('div', { style: { position: 'relative', width: '100%' } },
@@ -1032,29 +1056,29 @@ class Component extends DCLogic {
 
   footerEl() {
     const gal = ['images/gina-hero.jpg', 'images/glider.jpg', 'images/bench-estuary.jpg', 'images/gina-flowers.jpg', 'images/gina-orange-bridge.jpg'];
-    const col = (title, items) => React.createElement('div', null,
+    const col = (title, items, handlers) => React.createElement('div', null,
       React.createElement('div', { style: { fontSize: '17px', fontWeight: 800, color: '#fff', marginBottom: '18px' } }, title),
       React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '11px' } },
-        items.map((t, i) => React.createElement('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: '9px', fontSize: '14px', color: 'rgba(255,255,255,0.72)', cursor: 'pointer' } },
+        items.map((t, i) => React.createElement('div', { key: i, onClick: handlers ? handlers[i] : undefined, style: { display: 'flex', alignItems: 'center', gap: '9px', fontSize: '14px', color: 'rgba(255,255,255,0.72)', cursor: 'pointer', transition: 'color 0.2s, transform 0.2s', width: 'fit-content' }, onMouseEnter: (e) => { e.currentTarget.style.color = '#ffb877'; e.currentTarget.style.transform = 'translateX(3px)'; }, onMouseLeave: (e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.72)'; e.currentTarget.style.transform = 'none'; } },
           React.createElement('span', { style: { color: '#ef7a1c', fontWeight: 800 } }, '»'), t))
       )
     );
     return React.createElement('footer', { style: { background: '#16382a' } },
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', padding: 'clamp(40px,5vw,64px) clamp(20px,5vw,60px) 0' } },
         React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '14px', marginBottom: '48px' } },
-          gal.map((s, i) => React.createElement('div', { key: i, style: { aspectRatio: '4/3', borderRadius: '12px', overflow: 'hidden' } }, this.img(s, ''))))
+          gal.map((s, i) => React.createElement('div', { key: i, style: { aspectRatio: '4/3', borderRadius: '10px', overflow: 'hidden' } }, this.img(s, ''))))
       ),
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', padding: '0 clamp(20px,5vw,60px) 40px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '40px' } },
         React.createElement('div', null,
           React.createElement('img', { src: 'images/logo-white.png', alt: 'Gina Dallison Coaching — Have Hope, Feel Better', style: { width: '220px', maxWidth: '75%', height: 'auto', display: 'block', marginBottom: '18px' } }),
           React.createElement('p', { style: { fontSize: '14px', lineHeight: 1.7, color: 'rgba(255,255,255,0.66)', maxWidth: '260px' } }, 'Hope-filled coaching for living with chronic illness — from struggle into a brighter world.')
         ),
-        col('Ways I Help', ['Individual Coaching', 'Group Coaching', 'Corporate Wellbeing', 'Map of Wellness', 'Speaking & Workshops']),
-        col('Quick Links', this.pages.map((p) => p.label)),
+        col('Ways I Help', ['Individual Coaching', 'Group Coaching', 'Corporate Wellbeing', 'Map of Wellness', 'Speaking & Workshops'], [() => this.go('coaching'), () => this.go('coaching'), () => this.go('coaching'), () => this.go('map'), () => this.go('coaching')]),
+        col('Quick Links', this.pages.map((p) => p.label), this.pages.map((p) => () => this.go(p.key))),
         React.createElement('div', null,
           React.createElement('div', { style: { fontSize: '17px', fontWeight: 800, color: '#fff', marginBottom: '18px' } }, 'Newsletter'),
-          React.createElement('input', { placeholder: 'Email Address', style: { width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '10px', padding: '13px 14px', color: '#fff', fontFamily: 'inherit', fontSize: '14px', outline: 'none', marginBottom: '12px' } }),
-          React.createElement('button', { style: { width: '100%', background: '#ef7a1c', color: '#fff', fontFamily: 'inherit', fontSize: '14px', fontWeight: 700, border: 'none', borderRadius: '10px', padding: '13px', cursor: 'pointer' } }, 'Subscribe')
+          React.createElement('input', { placeholder: 'Email Address', style: { width: '100%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', padding: '13px 14px', color: '#fff', fontFamily: 'inherit', fontSize: '14px', outline: 'none', marginBottom: '12px' } }),
+          React.createElement('button', { style: { width: '100%', background: '#ef7a1c', color: '#fff', fontFamily: 'inherit', fontSize: '14px', fontWeight: 700, border: 'none', borderRadius: '8px', padding: '13px', cursor: 'pointer' } }, 'Subscribe')
         )
       ),
       React.createElement('div', { style: { borderTop: '1px solid rgba(255,255,255,0.12)' } },
@@ -1082,7 +1106,7 @@ class Component extends DCLogic {
       { name: 'Daniel R.', role: 'Group coaching member', text: 'The “one thing” genuinely shifted something in me. For the first time in years I feel hopeful about what is ahead.' },
     ];
     const stars = React.createElement('div', { style: { display: 'flex', gap: '3px', marginBottom: '16px' } }, [0, 1, 2, 3, 4].map((i) => React.createElement('span', { key: i, style: { color: '#ef7a1c', fontSize: '16px' } }, '★')));
-    const card = (r, i) => React.createElement('div', { key: i, style: { background: '#fff', border: '1px solid rgba(20,40,25,0.08)', borderRadius: '18px', padding: '28px' } },
+    const card = (r, i) => React.createElement('div', { key: i, style: { background: '#fff', border: '1px solid rgba(20,40,25,0.08)', borderRadius: '12px', padding: '28px' } },
       stars,
       React.createElement('p', { style: { fontSize: '15px', lineHeight: 1.7, color: '#4a5548', marginBottom: '20px' } }, r.text),
       React.createElement('div', { style: { fontSize: '16px', fontWeight: 800, color: '#16281c' } }, r.name),
@@ -1140,6 +1164,7 @@ class Component extends DCLogic {
       navRef: (el) => { this.navEl = el; },
 
       navItems: this.pages.map((pg) => ({ label: pg.label, active: pg.key === p, onClick: mk(pg.key) })),
+      menuOpen: this.state.menuOpen, toggleMenu: this.toggleMenu, menuIcon: this.state.menuOpen ? '✕' : '☰',
       goHome: mk('home'), goAbout: mk('about'), goCoaching: mk('coaching'), goMap: mk('map'),
       goPodcast: mk('podcast'), goBlog: mk('blog'), goCommunity: mk('community'), goContact: mk('contact'),
 
