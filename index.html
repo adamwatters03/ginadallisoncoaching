@@ -507,9 +507,9 @@
 
       <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#fff;">
         <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
-          <div style="position:relative;min-height:380px;">
-            <div style="position:absolute;left:0;top:0;width:74%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ aboutStoryImg }}</div>
-            <div style="position:absolute;right:0;bottom:0;width:52%;aspect-ratio:1;border-radius:12px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(20,40,25,0.2);">{{ aboutImg2 }}</div>
+          <div style="position:relative;padding-bottom:48px;padding-right:32px;">
+            <div style="width:80%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ aboutStoryImg }}</div>
+            <div style="position:absolute;right:0;bottom:0;width:50%;aspect-ratio:1;border-radius:12px;overflow:hidden;border:6px solid #fff;box-shadow:0 18px 40px rgba(20,40,25,0.2);">{{ aboutImg2 }}</div>
           </div>
           <div>
             <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;color:#2f5e3a;">A fellow traveller</span></div>
@@ -1041,13 +1041,35 @@ class Component extends DCLogic {
     window.scrollTo(0, 0);
     const w = document.querySelector('[data-pagewrap]');
     if (w) { w.style.animation = 'none'; void w.offsetWidth; w.style.animation = 'gdFade 0.45s ease'; }
+    this._applyMeta(page);
     this._reveal();
   }
   toggleMenu = () => { this.setState({ menuOpen: !this.state.menuOpen }); };
   openResource = (i) => { try { document.body.style.overflow = 'hidden'; } catch (e) {} this.setState({ resourceOpen: i }); };
   closeResource = () => { try { document.body.style.overflow = ''; } catch (e) {} this.setState({ resourceOpen: null }); };
 
-  componentDidMount() { this._reveal(); this._startLoop(); }
+  pageMeta = {
+    home: { t: 'Gina Dallison Coaching | Transformational Life & Chronic Illness Coach, Rugby & Online (UK)', d: 'Transformational life coaching with Gina Dallison — Rugby-based, online across the UK & worldwide via Zoom. For chronic illness (MS, Parkinson’s, fibromyalgia) and anyone feeling stuck. Accredited by the Association for Coaching. Book a free discovery call.' },
+    about: { t: 'About Gina Dallison | Transformational Coach Living with MS — Rugby & Online', d: 'Meet Gina Dallison — transformational life coach living with Multiple Sclerosis, accredited by the Association for Coaching. Helping people across Rugby, the UK and worldwide walk from struggle into a brighter world.' },
+    coaching: { t: '1:1 Life & Chronic Illness Coaching (£120/session) | Gina Dallison, Rugby & Online', d: 'Bespoke 1:1 transformational coaching with Gina Dallison — £120 per session or £500 for five. One-hour Zoom sessions with recording and notes, for chronic illness or feeling stuck. Book a free discovery call.' },
+    map: { t: 'Map to Wellness — 12-Week 1:1 Coaching Programme | Gina Dallison Coaching', d: 'The Map to Wellness: a personalised 1:1 transformational coaching journey to feel better, think differently and live fully — whatever your diagnosis. Online across the UK & worldwide. Book a free call.' },
+    podcast: { t: 'Healing Vibrations Podcast | Hope & Chronic Illness | Gina Dallison', d: 'Healing Vibrations — honest, hopeful conversations on chronic illness, mindset and finding the gift inside life’s hardest chapters, with coach Gina Dallison.' },
+    blog: { t: 'Blog — Hope, Mindset & Living with Chronic Illness | Gina Dallison Coaching', d: 'Reflections, stories and gentle encouragement on hope, mindset and living well with chronic illness — from transformational coach Gina Dallison in Rugby.' },
+    community: { t: 'Community | Gina Dallison Coaching — You Don’t Heal Alone', d: 'Join a warm, supportive community for people living with chronic illness — live conversations and a private group with coach Gina Dallison.' },
+    contact: { t: 'Contact Gina Dallison | Book a Free Coaching Discovery Call (Rugby & Online UK)', d: 'Get in touch with Gina Dallison Coaching in Rugby, or online across the UK & worldwide. Book a free, no-obligation discovery call, or grab a free coaching resource.' },
+  };
+  _applyMeta(page) {
+    try {
+      const m = this.pageMeta[page] || this.pageMeta.home;
+      document.title = m.t;
+      const set = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+      set('meta[name="description"]', m.d);
+      set('meta[property="og:title"]', m.t);
+      set('meta[property="og:description"]', m.d);
+    } catch (e) {}
+  }
+
+  componentDidMount() { this._reveal(); this._startLoop(); this._applyMeta(this.state.page); }
   componentWillUnmount() { if (this._io) this._io.disconnect(); cancelAnimationFrame(this._raf); clearTimeout(this._rf); clearTimeout(this._pageT); }
   componentDidUpdate(prevProps, prevState) {
     if (prevState && prevState.page !== this.state.page) {
@@ -1239,7 +1261,13 @@ class Component extends DCLogic {
   }
 
   footerEl() {
-    const gal = ['images/gina-hero.jpg', 'images/glider.jpg', 'images/bench-estuary.jpg', 'images/gina-flowers.jpg', 'images/gina-orange-bridge.jpg'];
+    const gal = [
+      { s: 'images/gina-hero.jpg', a: 'Gina Dallison smiling outdoors' },
+      { s: 'images/glider.jpg', a: 'Gina enjoying a glider flight' },
+      { s: 'images/bench-estuary.jpg', a: 'A peaceful nature walk by the estuary' },
+      { s: 'images/gina-flowers.jpg', a: 'Gina among the flowers' },
+      { s: 'images/gina-orange-bridge.jpg', a: 'Gina on a bridge surrounded by trees' },
+    ];
     const col = (title, items, handlers) => React.createElement('div', null,
       React.createElement('div', { style: { fontSize: '17px', fontWeight: 800, color: '#fff', marginBottom: '18px' } }, title),
       React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '11px' } },
@@ -1251,7 +1279,7 @@ class Component extends DCLogic {
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', padding: 'clamp(40px,5vw,64px) clamp(20px,5vw,60px) 0' } },
         React.createElement('div', { style: { overflow: 'hidden', marginBottom: '48px', WebkitMaskImage: 'linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)', maskImage: 'linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)' } },
           React.createElement('div', { className: 'gd-marquee', style: { display: 'flex', width: 'max-content' } },
-            gal.concat(gal).map((s, i) => React.createElement('div', { key: i, 'aria-hidden': i >= gal.length ? 'true' : undefined, style: { width: '230px', flex: 'none', marginRight: '14px', aspectRatio: '4/3', borderRadius: '10px', overflow: 'hidden' } }, this.img(s, '')))))
+            gal.concat(gal).map((g, i) => React.createElement('div', { key: i, 'aria-hidden': i >= gal.length ? 'true' : undefined, style: { width: '230px', flex: 'none', marginRight: '14px', aspectRatio: '4/3', borderRadius: '10px', overflow: 'hidden' } }, this.img(g.s, i < gal.length ? g.a : '')))))
       ),
       React.createElement('div', { style: { maxWidth: '1180px', margin: '0 auto', padding: '0 clamp(20px,5vw,60px) 40px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '40px' } },
         React.createElement('div', null,
@@ -1436,12 +1464,12 @@ class Component extends DCLogic {
       ],
       blogFilters: ['All', 'Healing', 'Mindset', 'Chronic Illness', 'Transformation'],
       postsAll: [
-        { author: 'Gina', date: 'May 25, 2026', title: 'What if your illness is a gift?', excerpt: 'Reframing the hardest chapter as the beginning of another path…', imgEl: this.img('images/gina-flowers.jpg', '') },
-        { author: 'Gina', date: 'May 18, 2026', title: 'The day I stopped fighting my body', excerpt: 'On listening, surrender, and the unexpected freedom that followed…', imgEl: this.img('images/meditation.jpg', '') },
-        { author: 'Gina', date: 'May 09, 2026', title: 'From the forest to the sunset', excerpt: 'How the journey out of darkness rarely looks the way we expect…', imgEl: this.img('images/journey-steps.jpg', '') },
-        { author: 'Gina', date: 'Apr 28, 2026', title: 'Choosing the path you didn’t choose', excerpt: 'Finding possibility and expansion in the road less travelled…', imgEl: this.img('images/bench-estuary.jpg', '') },
-        { author: 'Gina', date: 'Apr 14, 2026', title: 'Small beacons, big light', excerpt: 'Why we were never meant to heal entirely alone…', imgEl: this.img('images/gina-hero.jpg', '') },
-        { author: 'Gina', date: 'Apr 02, 2026', title: 'A more positive outlook, honestly', excerpt: 'Positivity that doesn’t bypass the hard parts…', imgEl: this.img('images/gina-orange-bridge.jpg', '') },
+        { author: 'Gina', date: 'May 25, 2026', title: 'What if your illness is a gift?', excerpt: 'Reframing the hardest chapter as the beginning of another path…', imgEl: this.img('images/gina-flowers.jpg', 'What if your illness is a gift? — blog by Gina Dallison') },
+        { author: 'Gina', date: 'May 18, 2026', title: 'The day I stopped fighting my body', excerpt: 'On listening, surrender, and the unexpected freedom that followed…', imgEl: this.img('images/meditation.jpg', 'The day I stopped fighting my body — blog by Gina Dallison') },
+        { author: 'Gina', date: 'May 09, 2026', title: 'From the forest to the sunset', excerpt: 'How the journey out of darkness rarely looks the way we expect…', imgEl: this.img('images/journey-steps.jpg', 'From the forest to the sunset — blog by Gina Dallison') },
+        { author: 'Gina', date: 'Apr 28, 2026', title: 'Choosing the path you didn’t choose', excerpt: 'Finding possibility and expansion in the road less travelled…', imgEl: this.img('images/bench-estuary.jpg', 'Choosing the path you didn’t choose — blog by Gina Dallison') },
+        { author: 'Gina', date: 'Apr 14, 2026', title: 'Small beacons, big light', excerpt: 'Why we were never meant to heal entirely alone…', imgEl: this.img('images/gina-hero.jpg', 'Small beacons, big light — blog by Gina Dallison') },
+        { author: 'Gina', date: 'Apr 02, 2026', title: 'A more positive outlook, honestly', excerpt: 'Positivity that doesn’t bypass the hard parts…', imgEl: this.img('images/gina-orange-bridge.jpg', 'A more positive outlook, honestly — blog by Gina Dallison') },
       ],
       reviews: [
         { name: 'Sarah M.', role: 'Map of Wellness graduate', text: 'Gina helped me see my illness not as a wall, but as a doorway. I finally feel like I am moving forward instead of standing still.', avatarEl: this.img('images/gina-wisteria.jpg', '') },
