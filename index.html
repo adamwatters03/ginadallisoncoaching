@@ -875,34 +875,13 @@
         </div>
       </section>
 
-      <section data-reveal style="padding:clamp(56px,7vw,100px) clamp(20px,5vw,60px);background:#fff;">
-        <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(30px,4vw,56px);align-items:center;">
-          <div style="aspect-ratio:1;border-radius:12px;overflow:hidden;box-shadow:0 24px 56px rgba(20,40,25,0.2);">{{ podcastImg }}</div>
-          <div>
-            <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;color:#2f5e3a;">The podcast</span></div>
-            <h2 style="font-size:clamp(28px,3.4vw,44px);font-weight:800;line-height:1.12;color:#16281c;margin-bottom:16px;text-wrap:balance;">Honest conversations on hope & healing</h2>
-            <p style="font-size:16px;line-height:1.7;color:#4a5548;margin-bottom:24px;max-width:520px;">Tune in for gentle, honest conversations about chronic illness, hope, and the gift hidden inside the hardest chapters.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <sc-for list="{{ platforms }}" as="pf" hint-placeholder-count="3">
-                <span style="display:inline-flex;align-items:center;gap:8px;background:#eef6ea;border:1px solid rgba(20,40,25,0.08);border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:600;color:#16281c;cursor:pointer;" style-hover="background:rgba(239,122,28,0.12);"><span style="width:8px;height:8px;border-radius:50%;background:#ef7a1c;"></span>{{ pf }}</span>
-              </sc-for>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section data-reveal style="padding:0 clamp(20px,5vw,60px) clamp(56px,7vw,100px);background:#fff;">
-        <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:14px;">
-          <sc-for list="{{ episodes }}" as="e" hint-placeholder-count="5">
-            <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#eef6ea;border-radius:10px;padding:18px 22px;transition:box-shadow 0.2s;" style-hover="box-shadow:0 14px 32px rgba(20,40,25,0.12);">
-              <div style="width:52px;height:52px;border-radius:50%;background:#ef7a1c;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;"><span style="width:0;height:0;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px;"></span></div>
-              <div style="flex:1;min-width:200px;">
-                <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#ef7a1c;font-weight:700;margin-bottom:5px;">{{ e.no }}</div>
-                <div style="font-size:17px;font-weight:800;color:#16281c;">{{ e.title }}</div>
-              </div>
-              <span style="font-family:ui-monospace,monospace;font-size:13px;color:#5d685a;">{{ e.length }}</span>
-            </div>
-          </sc-for>
+      <section data-reveal style="padding:clamp(60px,8vw,110px) clamp(20px,5vw,60px);background:#fff;">
+        <div style="max-width:720px;margin:0 auto;text-align:center;">
+          <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;"><span style="width:16px;height:16px;background:#ef7a1c;border-radius:0 70% 0 70%;"></span><span style="font-size:13px;font-weight:700;letter-spacing:0.04em;color:#2f5e3a;">The podcast</span></div>
+          <div style="display:inline-block;background:rgba(239,122,28,0.12);color:#c0532b;font-size:13px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;border-radius:999px;padding:8px 18px;margin-bottom:22px;">Coming soon</div>
+          <h2 style="font-size:clamp(30px,4vw,50px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;color:#16281c;margin-bottom:18px;text-wrap:balance;">Healing Vibrations is on its way</h2>
+          <p style="font-size:17px;line-height:1.7;color:#5d685a;margin-bottom:34px;">Gentle, honest conversations about chronic illness, hope, and the gift hidden inside the hardest chapters — launching soon. Be the first to know when the first episode goes live.</p>
+          <button onClick="{{ goContact }}" style="display:inline-flex;align-items:center;gap:11px;background:#ef7a1c;color:#fff;font-family:inherit;font-size:15px;font-weight:700;border:none;border-radius:999px;padding:9px 9px 9px 26px;cursor:pointer;box-shadow:0 12px 28px rgba(239,122,28,0.36);transition:transform .2s,box-shadow .2s;" style-hover="transform:translateY(-3px);box-shadow:0 16px 34px rgba(239,122,28,0.5);">Get in touch to be notified <span style="width:36px;height:36px;border-radius:50%;background:#fff;color:#ef7a1c;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none;">↗</span></button>
         </div>
       </section>
 
@@ -1053,7 +1032,7 @@ class Component extends DCLogic {
     about: { t: 'About Gina Dallison | Transformational Coach Living with MS — Rugby & Online', d: 'Meet Gina Dallison — transformational life coach living with Multiple Sclerosis, accredited by the Association for Coaching. Helping people across Rugby, the UK and worldwide walk from struggle into a brighter world.' },
     coaching: { t: '1:1 Life & Chronic Illness Coaching (£120/session) | Gina Dallison, Rugby & Online', d: 'Bespoke 1:1 transformational coaching with Gina Dallison — £120 per session or £500 for five. One-hour Zoom sessions with recording and notes, for chronic illness or feeling stuck. Book a free discovery call.' },
     map: { t: 'Map to Wellness — 12-Week 1:1 Coaching Programme | Gina Dallison Coaching', d: 'The Map to Wellness: a personalised 1:1 transformational coaching journey to feel better, think differently and live fully — whatever your diagnosis. Online across the UK & worldwide. Book a free call.' },
-    podcast: { t: 'Healing Vibrations Podcast | Hope & Chronic Illness | Gina Dallison', d: 'Healing Vibrations — honest, hopeful conversations on chronic illness, mindset and finding the gift inside life’s hardest chapters, with coach Gina Dallison.' },
+    podcast: { t: 'Healing Vibrations Podcast (Coming Soon) | Gina Dallison Coaching', d: 'Healing Vibrations — a new podcast from coach Gina Dallison on chronic illness, hope and mindset. Coming soon: get in touch to be the first to know when it launches.' },
     blog: { t: 'Blog — Hope, Mindset & Living with Chronic Illness | Gina Dallison Coaching', d: 'Reflections, stories and gentle encouragement on hope, mindset and living well with chronic illness — from transformational coach Gina Dallison in Rugby.' },
     community: { t: 'Community | Gina Dallison Coaching — You Don’t Heal Alone', d: 'Join a warm, supportive community for people living with chronic illness — live conversations and a private group with coach Gina Dallison.' },
     contact: { t: 'Contact Gina Dallison | Book a Free Coaching Discovery Call (Rugby & Online UK)', d: 'Get in touch with Gina Dallison Coaching in Rugby, or online across the UK & worldwide. Book a free, no-obligation discovery call, or grab a free coaching resource.' },
